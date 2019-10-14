@@ -1,3 +1,8 @@
+/**
+ * Leetcode 多线程
+ * https://leetcode.com/problems/print-in-order/
+ * 多线程按照顺序来打印 1 2 3
+ */
 package thread;
 
 import java.util.concurrent.Semaphore;
