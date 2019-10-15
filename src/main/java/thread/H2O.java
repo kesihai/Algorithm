@@ -1,57 +1,67 @@
 package thread;
 
+import java.util.concurrent.Semaphore;
+
 class H2O {
-  Object lock = new Object();
+ private Object lock = new Object();
+ volatile int h = 0;
+ volatile int o = 0;
+
+ public H2O() {
+ }
+
+ public void hydrogen(Runnable releaseHydrogen) throws InterruptedException {
+   synchronized (lock) {
+    while (h > o * 2) {
+     lock.wait();
+    }
+    releaseHydrogen.run();
+    h++;
+    lock.notifyAll();
+   }
+ }
+
+ public void oxygen(Runnable releaseOxygen) throws InterruptedException {
+   synchronized (lock) {
+     while (o * 2 > h) {
+       lock.wait();
+     }
+     releaseOxygen.run();
+     o++;
+     if (o > 100000) {
+       h = h - (o - 1) * 2;
+       o = 1;
+     }
+     lock.notifyAll();
+   }
+ }
+}
+/*
+class H2O {
+  Semaphore[] semas = new Semaphore[2];
   volatile int H = 0;
-  volatile int O = 0;
 
   public H2O() {
+    semas[0] = new Semaphore(2);
+    semas[1] = new Semaphore(0);
   }
 
   public void hydrogen(Runnable releaseHydrogen) throws InterruptedException {
-    synchronized (lock) {
-      if (H == 2) {
-        lock.wait();
-        releaseHydrogen.run();
-        H = 0;
-        O = 0;
-      }
-      if (H == 0) {
-        releaseHydrogen.run();
-        H++;
-        return;
-      }
-      if (H == 1) {
-        if (O == 0) {
-          releaseHydrogen.run();
-          H++;
-        } else {
-          releaseHydrogen.run();
-          O = 0;
-          H = 0;
-          notifyAll();
-        }
-        return;
-      }
+    semas[0].acquire();
+    releaseHydrogen.run();
+    H++;
+    if (H == 2) {
+      semas[1].release();
     }
   }
 
   public void oxygen(Runnable releaseOxygen) throws InterruptedException {
-    synchronized (lock) {
-      if (O == 0) {
-        releaseOxygen.run();
-        O++;
-      } else {
-        if (H < 2) {
-          lock.wait();
-          H = 0;
-          O = 0;
-        } else {
-          H = O = 0;
-          lock.notifyAll();
-        }
-      }
-    }
+    semas[1].acquire();
+    releaseOxygen.run();
+    H = 0;
+    semas[0].release(2);
   }
+
 }
 
+*/
