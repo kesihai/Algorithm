@@ -2,6 +2,10 @@ package thread;
 
 import java.util.concurrent.Semaphore;
 
+/**
+ * Leetcode 多线程 https://leetcode.com/problems/building-h2o/
+ * 给一组H O， 保证h * 2 = o, 现在要求要输出过程中,始终保证 h * 2 <= o
+ */
 class H2O {
  private Object lock = new Object();
  volatile int h = 0;
