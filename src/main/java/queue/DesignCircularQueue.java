@@ -1,98 +1,67 @@
 package queue;
+class MyCircularQueue {
 
-class MyCircularDeque {
-  private static class Node {
-    int value;
-    Node pre;
-    Node next;
-    Node (int value, Node pre, Node next) {
-      this.value = value;
-      this.next = next;
-      this.pre = pre;
-    }
-    Node (int value) {
-      this(value, null, null);
-    }
-  }
-  private Node head;
-  private Node tail;
+  int[] values;
+  int head, tail;
   int size = 0;
-  int cur = 0;
-  /** Initialize your data structure here. Set the size of the deque to be k. */
-  public MyCircularDeque(int k) {
-    this.size = k;
-    this.cur = 0;
-    head = new Node(-1);
-    tail = new Node(-1, head, head);
-    head.pre = head.next = tail;
+  /** Initialize your data structure here. Set the size of the queue to be k. */
+  public MyCircularQueue(int k) {
+    values = new int[k];
+    head = tail = size = 0;
   }
 
-  /** Adds an item at the front of Deque. Return true if the operation is successful. */
-  public boolean insertFront(int value) {
-    if (cur >= size) {
+  /** Insert an element into the circular queue. Return true if the operation is successful. */
+  public boolean enQueue(int value) {
+    if (isFull()) {
       return false;
     }
-    Node node = new Node(value, head, head.next);
-    head.next.pre = node;
-    head.next = node;
-    cur++;
+    values[tail] = value;
+    tail = (tail + 1) % values.length;
+    size++;
     return true;
   }
 
-  /** Adds an item at the rear of Deque. Return true if the operation is successful. */
-  public boolean insertLast(int value) {
-    if (cur >= size) {
+  /** Delete an element from the circular queue. Return true if the operation is successful. */
+  public boolean deQueue() {
+    if (isEmpty()) {
       return false;
     }
-    Node node = new Node(value, tail.pre, tail);
-    tail.pre.next = node;
-    tail.pre = node;
-    cur++;
+    head = (head + 1) % values.length;
+    size--;
     return true;
   }
 
-  /** Deletes an item from the front of Deque. Return true if the operation is successful. */
-  public boolean deleteFront() {
-    if (cur == 0) {
-      return false;
-    }
-    head.next.next.pre = head;
-    head.next = head.next.next;
-    cur--;
-    return true;
+  /** Get the front item from the queue. */
+  public int Front() {
+    return isEmpty() ? -1 : values[head];
   }
 
-  /** Deletes an item from the rear of Deque. Return true if the operation is successful. */
-  public boolean deleteLast() {
-   if (cur == 0) {
-     return false;
-   }
-    tail.pre.pre.next = tail;
-    tail.pre = tail.pre.pre;
-   cur--;
-   return true;
+  /** Get the last item from the queue. */
+  public int Rear() {
+    return isEmpty() ? -1 : values[(tail - 1 + values.length) % values.length];
   }
 
-  /** Get the front item from the deque. */
-  public int getFront() {
-    return cur > 0 ? head.next.value : -1;
-  }
-
-  /** Get the last item from the deque. */
-  public int getRear() {
-    return cur > 0 ? tail.pre.value : -1;
-  }
-
-  /** Checks whether the circular deque is empty or not. */
+  /** Checks whether the circular queue is empty or not. */
   public boolean isEmpty() {
-    return cur == 0;
+    return size == 0;
   }
 
-  /** Checks whether the circular deque is full or not. */
+  /** Checks whether the circular queue is full or not. */
   public boolean isFull() {
-    return cur >= size;
+    return size == values.length;
   }
 }
+
+/**
+ * Your MyCircularQueue object will be instantiated and called as such:
+ * MyCircularQueue obj = new MyCircularQueue(k);
+ * boolean param_1 = obj.enQueue(value);
+ * boolean param_2 = obj.deQueue();
+ * int param_3 = obj.Front();
+ * int param_4 = obj.Rear();
+ * boolean param_5 = obj.isEmpty();
+ * boolean param_6 = obj.isFull();
+ */
 
 /**
  * leetcode 设计循环双向队列 https://leetcode.com/problems/design-circular-deque/
