@@ -68,14 +68,5 @@ class MyCircularQueue {
  */
 public class DesignCircularQueue {
   public static void main(String[] args) {
-    MyCircularDeque q = new MyCircularDeque(3);
-    System.out.println(q.insertLast(1));
-    System.out.println(q.insertLast(2));
-    System.out.println(q.insertFront(3));
-    System.out.println(q.insertFront(4));
-    System.out.println(q.deleteLast());
-    System.out.println(q.insertFront(4));
-    System.out.println(q.getFront());
-
   }
 }
