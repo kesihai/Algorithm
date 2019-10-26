@@ -1,8 +1,5 @@
 package thread;
 
-import com.sun.corba.se.impl.orbutil.DenseIntMapImpl;
-
-import java.util.Arrays;
 import java.util.concurrent.Semaphore;
 
 /**
