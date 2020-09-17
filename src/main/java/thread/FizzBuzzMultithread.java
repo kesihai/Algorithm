@@ -8,7 +8,6 @@
  */
 package thread;
 
-import sun.awt.windows.awtLocalization_ko;
 
 import java.util.function.IntConsumer;
 
