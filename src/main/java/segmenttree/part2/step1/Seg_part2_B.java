@@ -1,8 +1,8 @@
-package segmenttree;
+package segmenttree.part2.step1;
 
 import java.util.Scanner;
 
-public class Seg_part2_A {
+public class Seg_part2_B {
   static int n, m;
   static int[] a;
   static Scanner in = new Scanner(System.in);
@@ -11,9 +11,6 @@ public class Seg_part2_A {
     n = in.nextInt();
     m = in.nextInt();
     a = new int[n];
-//    for (int i = 0; i < n; i++) {
-//      a[i] = in.nextInt();
-//    }
     Tree tree = new Tree();
     tree.build(0, n - 1);
     int op, x, y, v;
@@ -54,7 +51,7 @@ public class Seg_part2_A {
 
     public void update(int L, int R, int v) {
       if (L == le && ri == R) {
-        this.value += v;
+        this.value = Math.max(v, value);
         return;
       }
 
@@ -84,8 +81,8 @@ public class Seg_part2_A {
       if (value == 0) {
         return;
       }
-      left.value += value;
-      right.value += value;
+      left.value = Math.max(value, left.value);
+      right.value = Math.max(value, right.value);
       value = 0;
     }
   }
