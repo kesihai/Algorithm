@@ -1,8 +1,8 @@
-package segmenttree.part2.step3;
+//package segmenttree.part2.step3;
 
 import java.util.Scanner;
 
-public class B {
+public class C {
   static int n, m;
   static Scanner in = new Scanner(System.in);
 
@@ -18,10 +18,12 @@ public class B {
       if (op == 1) {
         x = in.nextInt();
         y = in.nextInt();
-        tree.update(x, y - 1);
+        v = in.nextLong();
+        tree.update(x, y - 1, v);
       } else {
+        v = in.nextLong();
         x = in.nextInt();
-        System.out.println(tree.query(x + 1));
+        System.out.println(tree.query(x, v));
       }
     }
   }
@@ -29,16 +31,16 @@ public class B {
   static class Tree {
     int le;
     int ri;
-    boolean reverse;
-    int oneNum = 0;
+    long max;
+    long add;
     Tree left;
     Tree right;
 
     public void build(int le, int ri) {
       this.le = le;
       this.ri = ri;
-      reverse = false;
-      oneNum = 0;
+      add = 0;
+      max = 0;
       if (le == ri) {
         return;
       }
@@ -49,51 +51,56 @@ public class B {
       right.build(mid + 1, ri);
     }
 
-    public void update(int L, int R) {
+    public void update(int L, int R, long v) {
       if (L == le && ri == R) {
-        reverse = !reverse;
-        oneNum = (R - L + 1) - oneNum;
+        add += v;
+        max += v;
         return;
       }
 
       pushDown();
       if (left.ri >= R) {
-        left.update(L, R);
+        left.update(L, R, v);
       } else if (right.le <= L) {
-        right.update(L, R);
+        right.update(L, R, v);
       } else {
-        left.update(L, left.ri);
-        right.update(right.le, R);
+        left.update(L, left.ri, v);
+        right.update(right.le, R, v);
       }
       pushUp();
     }
 
-    long query(int num) {
+    long query(int L, long v) {
+      if (max < v) {
+        return -1;
+      }
       if (le == ri) {
         return le;
       }
       pushDown();
-      if (left.oneNum >= num) {
-        return left.query(num);
-      } else {
-        return right.query(num - left.oneNum);
+      long ans = -1;
+      if (left.ri >= L && left.max >= v) {
+        ans = left.query(L, v);
+        if (ans != -1) {
+          return ans;
+        }
       }
+      return right.query(L, v);
     }
 
     private void pushDown() {
-      if (!reverse) {
+      if (add == 0) {
         return;
       }
-
-      left.oneNum = (left.ri - left.le + 1) - left.oneNum;
-      right.oneNum = (right.ri - right.le + 1) - right.oneNum;
-      left.reverse = !left.reverse;
-      right.reverse = !right.reverse;
-      reverse = false;
+      left.max += add;
+      right.max += add;
+      left.add += add;
+      right.add += add;
+      add = 0;
     }
 
     private void pushUp() {
-      oneNum = right.oneNum + left.oneNum;
+      max = Math.max(left.max, right.max);
     }
   }
 }
