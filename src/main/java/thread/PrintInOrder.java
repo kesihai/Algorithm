@@ -91,7 +91,7 @@ class MyRunnable implements Runnable {
 public class PrintInOrder {
   public static void main(String[] args) throws InterruptedException {
     Foo f = new Foo();
-    f.first(new MyRunnable("A"));
+    f.first(new MyRunnable("A.java"));
     f.second(new MyRunnable("B"));
     f.third(new MyRunnable("C"));
   }
