@@ -9,33 +9,35 @@ using namespace std;
 const int N = 205;
 const double esp = 1e-6;
 
-int a[N], n, k;
+long long a[N], n, k;
 
-bool check(int mid) {
-  int index = n - 1; 
-  for (int i = 0; i < mid; i++) {
-    
+bool check(long long mid) {
+  long long ans = 0;
+  for (int i = 0; i < n; i++) {
+    ans +=min(mid, a[i]);
   }
+  return ans >= mid * k;
 }
 
 int main() {
-  scanf("%d%d", &k, &n);
+  scanf("%lld%lld", &k, &n);
+  long long sum = 0;
   for (int i = 0; i < n; i++) {
-    scanf("%d", a + i);
+    scanf("%lld", a + i);
+    sum += a[i];
   }
-  sort(a, a + n);
-  int le = 0, ri = n;
-  int ans = 0;
+  long long le = 0, ri = sum / k;
+  long long ans = 0;
   while (le <= ri) {
-    mid = (le + ri) >> 1;
-    if (check(mid))) {
+    long long mid = (le + ri) >> 1;
+    if (check(mid)) {
       ans = mid;
       le = mid + 1;
     } else {
       ri = mid - 1;
     }
   }
-  printf("%d\n", ans);
+  printf("%lld\n", ans);
   return 0;
 }
 
