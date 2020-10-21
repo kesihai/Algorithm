@@ -1,13 +1,8 @@
-#include <iostream>
-#include <cstdio>
-#include <cmath>
-#include <algorithm>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
 
 const int N = 100005;
 const double eps = 1e-6;
-double ans = 10000;
 
 int n, m;
 struct Node {
@@ -23,34 +18,46 @@ public:
 vector<Node>g[N];
 double dp[N];
 int vis[N];
-
+int pre[N];
+vector<int> path;
 
 double dfs(int pos, double avg) {
   if (pos == n) {
-    return dp[N] = 0;
+    return dp[pos] = 0;
   }
-  if (vis[N]) {
-    return dp[N];
+  if (vis[pos] != -1) {
+    return dp[pos];
   }
+  dp[pos] = 1000 * 1000;
   for (int i = 0; i < g[pos].size(); i++) {
     int to = g[pos][i].to;
-    if (!vis[N]) {
-      vis[N] = true;
-      dp[N] = g[pos][i].num - avg + dfs(to, avg);
+    if (vis[pos] == -1) {
+      vis[pos] = 1;
+      dp[pos] = g[pos][i].num - avg + dfs(to, avg);
+      pre[pos] = to;
     } else {
-      dp[N] = min(dp[N], g[pos][i].num - avg + dfs(to, avg));
+      double tmp = g[pos][i].num - avg + dfs(to, avg);
+      if (tmp < dp[pos]) {
+        dp[pos] = tmp;
+        pre[pos] = to;
+      }
     }
   }
-  return dp[N];
+  return dp[pos];
 }
 
-void getAns(double mid) {
-  
+void getAns(int pos) {
+  path.push_back(pos);
+  if (pos == n) {
+    return;
+  }
+  getAns(pre[pos]);
 }
 
 bool check(double mid) {
   memset(vis, -1, sizeof(vis));
-  return dfs(1, mid) <= 0; 
+  double tmp = dfs(1, mid);
+  return tmp <= 0;
 }
 
 int main() {
@@ -64,9 +71,8 @@ int main() {
     g[from].push_back(Node(to, num));
   }
 
-  ans = 1000;
 
-  double le = 0, ri = ans;
+  double le = 0, ri = 1000;
   while (le + eps < ri) {
     double mid = (le + ri) / 2;
     if (check(mid)) {
@@ -75,7 +81,19 @@ int main() {
       le = mid;
     }
   }
-
+  path.clear();
+  getAns(1);
+ // printf("%.3lf\n", le);
+  //printf("\n");
+  printf("%lu\n", path.size() - 1);
+  for (unsigned int i = 0; i < path.size(); i++) {
+    if (i == 0) {
+      printf("%d", path[i]);
+    } else {
+      printf(" %d", path[i]);
+    }
+  }
+  printf("\n");
   return 0;
 }
 
