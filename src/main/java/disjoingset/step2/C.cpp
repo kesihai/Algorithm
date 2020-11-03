@@ -3,16 +3,9 @@ using namespace std;
 
 const int N = 200005;
 
-struct Node {
-  int le;
-  int ri;
-  int len;
-}a[N * 4];
-
 int f[N];
-int num[N];
 int n, m;
-
+set<int> s;
 
 int findFather(int x) {
   if (x != f[x]) {
@@ -21,48 +14,38 @@ int findFather(int x) {
   return f[x];
 }
 
-void build(int pos, int le, int ri) {
-  f[pos].le = le;
-  f[pos].ri = ri;
-  f[pos].len = 0;
-  if (le == ri) return;
-  int mid = (le + ri) >> 1;
-  build(pos * 2, le, mid);
-  build(pos * 2 + 1, mid + 1, ri);
-}
-
-void pushUp(int pos) {
-
-}
-
-void update(int pos. int le) {
-  if (f[pos].le == f[pos].ri) {
-    f[pos].len = 1;
-    return;
-  }
-  if (f[pos * 2].ri >= le) {
-    update(pos * 2, le);
-  } else {
-    update(pos * 2 + 1, le);
-  }
-  
-}
-
 void init() {
   for (int i = 0; i <= n; i++) {
     f[i] = i;
-    num[i] = 1;
   }
-  build(1, 1, n);
+  s.clear();
+  for (int i = 1; i <= n; i++) {
+    s.insert(i);
+  }
+}
+
+void merge(int x, int y) {
+  x = findFather(x);
+  y = findFather(y);
+  f[x] = y;
 }
 
 inline void mergeRange(int x, int y) {
-  int xx = findFather(x);
-  x = xx;
-  while (x <= y) {
-    x = x + num[x];
-    f[x] = xx;
-    num[xx] += num[x];
+  /*int xx = x;
+  while (xx <= y) {
+    set<int>::iterator it = s.lower_bound(xx);
+    if (it == s.end()) break;
+    if (*it > y) break;
+    merge(xx, *it);
+    xx = *it;
+    s.erase(it);
+  }
+  */
+  int pos = x;
+  while (*s.lower_bound(pos) < y) {
+    pos = *s.lower_bound(pos);
+    s.erase(pos);
+    merge(pos, pos + 1);
   }
 }
 
