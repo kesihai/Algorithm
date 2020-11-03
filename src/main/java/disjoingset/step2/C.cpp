@@ -31,22 +31,24 @@ void merge(int x, int y) {
 }
 
 inline void mergeRange(int x, int y) {
-  /*int xx = x;
+  int xx = x + 1;
   while (xx <= y) {
+    merge(x, xx);
+    s.erase(xx);
     set<int>::iterator it = s.lower_bound(xx);
     if (it == s.end()) break;
     if (*it > y) break;
-    merge(xx, *it);
     xx = *it;
-    s.erase(it);
   }
-  */
-  int pos = x;
+
+  /*
+    int pos = x;
   while (*s.lower_bound(pos) < y) {
     pos = *s.lower_bound(pos);
     s.erase(pos);
     merge(pos, pos + 1);
   }
+  */
 }
 
 int main() {
