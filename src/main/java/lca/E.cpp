@@ -44,19 +44,23 @@ void tarjan(int cur, int pre) {
   low[cur] = cnt++;
   f[cur] = pre;
   s.push(cur);
+  int k = 0;
   for (int i = 0; i < g[cur].size(); i++) {
     int to = g[cur][i];
-    if (to == pre) continue;
-    tarjan(to, cur);
-    if (low[to] <= low[cur]) {
-      low[cur] = low[to];
-    } else {
-      path[to] = 1;
+    if (to == pre) {
+      continue;
+      //k++;
+      //if (k == 1) continue;
     }
+    tarjan(to, cur);
+    if (low[to] > low[cur]) {
+      path[to] = 1;
+      total++;
+    }
+    low[cur] = min(low[to], low[cur]);
   }
 
   if (vis[cur] == low[cur]) {
-    total++;
     int tmp = -1;
     do {
       tmp = s.top();
@@ -94,8 +98,14 @@ inline void handle(int from, int to) {
   }
 }
 
+void debug() {
+  for (int i = 1; i <= n; i++) {
+    printf("x = %d  f[x] = %d deep[x] = %d, path[x] = %d\n", i, f[i], deep[i], path[i]);
+  }
+  printf("total = %d\n", total);
+}
+
 int main() {
-  // printf("%d\n", 1 << 15);
   int ca = 0;
   while(~scanf("%d%d", &n, &m)) {
     if (n + m == 0) break;
@@ -112,13 +122,13 @@ int main() {
     }
     deep[0] = 0;
     tarjan(1, 0);
+    //debug();
     scanf("%d", &m);
     while (m--) {
       scanf("%d%d", &from, &to);
-      if (total != 1) {
-        handle(from, to);
-      }
-      printf("%d\n", total - 1);
+      handle(from, to);
+      printf("%d\n", total);
+      //debug();
     }
   }
   return 0;
