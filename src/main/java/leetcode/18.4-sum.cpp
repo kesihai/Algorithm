@@ -6,7 +6,9 @@
 
 // @lc code=start
 /*
-  
+  首选: 计算 2sum 的时候, 就是 排列数组，while(le < ri),
+  那么计算 3sum 的时候，就是转化为 3sum, (dfs 的方式)
+  那么计算 4sum 的时候，就是转化为 3sum. 复制度为 n^(k-1)
 */
 class Solution {
 public:
