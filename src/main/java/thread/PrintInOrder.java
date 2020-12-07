@@ -5,8 +5,6 @@
  */
 package thread;
 
-import java.util.concurrent.Semaphore;
-
 //class Foo {
 //
 //  Semaphore[] sema = new Semaphore[2];
@@ -91,7 +89,7 @@ class MyRunnable implements Runnable {
 public class PrintInOrder {
   public static void main(String[] args) throws InterruptedException {
     Foo f = new Foo();
-    f.first(new MyRunnable("A.java"));
+    f.first(new MyRunnable("cf_a.java"));
     f.second(new MyRunnable("B"));
     f.third(new MyRunnable("C"));
   }
