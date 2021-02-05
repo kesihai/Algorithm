@@ -33,8 +33,7 @@
 //// 示例 2：
 ////
 ////
-////输入：candiesCount = [5,2,6,4,1], queries = [[3,1,2],[4,10,3],[3,10,100],[4,100,3
-////0],[1,3,1]]
+////输入：candiesCount = [5,2,6,4,1], queries = [[3,1,2],[4,10,3],[3,10,100],[4,100,30],[1,3,1]]
 ////输出：[false,true,true,false,false]
 ////
 ////
@@ -55,10 +54,45 @@
 //// 👍 4 👎 0
 //
 //
+//import java.util.Arrays;
+//
 ////leetcode submit region begin(Prohibit modification and deletion)
 //class Solution {
 //  public boolean[] canEat(int[] candiesCount, int[][] queries) {
+//    long[] sum = new long[candiesCount.length];
+//    sum[0] = candiesCount[0];
+//    for (int i = 1; i < candiesCount.length; i++) {
+//      sum[i] = candiesCount[i] + sum[i - 1];
+//    }
+//    boolean[] ans = new boolean[queries.length];
+//    for (int i = 0; i < queries.length; i++) {
+//      long day = queries[i][1] + 1;
+//      int appleType = queries[i][0];
+//      long cap = queries[i][2];
+//      // 必须在day 有能力吃 天吃完 sum[appleType - 1] + 1.
+//      long all = (appleType > 0 ?  sum[appleType - 1] : 0);
+//      long mostEat = day * cap;
+//      if (mostEat <= all) {
+//        ans[i] = false;
+//        continue;
+//      }
+//      // sum[appleType] - 1 够 day - 1 天吃.
+//      all = sum[appleType];
+//      if (all < day) {
+//        ans[i] = false;
+//      } else {
+//        ans[i] = true;
+//      }
+//    }
+//    return ans;
+//  }
 //
+//  public static void main(String[] args) {
+//    Solution s = new Solution();
+//    System.out.println(Arrays.toString(s.canEat(
+//        new int[] {5,2,6,4,1},
+//        new int[][] {{3,1,2},{4,10,3},{3,10,100},{4,100,30},{1,3,1}}
+//    )));
 //  }
 //}
 ////leetcode submit region end(Prohibit modification and deletion)
