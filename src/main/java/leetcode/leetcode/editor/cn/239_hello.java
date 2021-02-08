@@ -62,10 +62,36 @@
 //// 👍 786 👎 0
 //
 //
+//import java.util.PriorityQueue;
+//
 ////leetcode submit region begin(Prohibit modification and deletion)
 //class Solution {
-//    public int[] maxSlidingWindow(int[] nums, int k) {
+//  static class Item {
+//    Item(int value, int pos) {
+//      this.value = value;
+//      this.pos = pos;
+//    }
+//    int value;
+//    int pos;
+//  }
+//
+//  public int[] maxSlidingWindow(int[] nums, int k) {
+//    PriorityQueue<Item> q = new PriorityQueue<>((a, b) -> b.value - a.value);
+//    int[] ans = new int[nums.length - k + 1];
+//    for (int i = 0; i < k - 1; i++) {
+//      if (q.isEmpty() || q.peek().value > nums[i]) {
+//        q.add(new Item(nums[i], i));
+//      } else {
+//        while (!q.isEmpty()) {
+//          q.poll();
+//        }
+//        q.add(nums[i]);
+//      }
+//    }
+//    int index = 0;
+//    for (int i = k - 1; i < nums.length; i++) {
 //
 //    }
+//  }
 //}
 ////leetcode submit region end(Prohibit modification and deletion)
