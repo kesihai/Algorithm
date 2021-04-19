@@ -1,11 +1,11 @@
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import useful.UsefulTool;
 
 public class Hello {
-  private static final Logger LOG = LoggerFactory.getLogger(Hello.class);
   @Test
   public void p() {
-    LOG.info("hwllo rodl");
+    UsefulTool.calculateLoan(10 * 10000, 3, 4.75);
   }
 }
